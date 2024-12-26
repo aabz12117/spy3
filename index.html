@@ -1,0 +1,310 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام الاختراق السري</title>
+    <style>
+        :root {
+            --neon-color: #0ff;
+            --bg-color: #000;
+            --text-color: #0ff;
+            --error-color: #ff0000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            padding: 1rem; /* تحسين المسافات في الهواتف */
+        }
+
+        .logo-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .logo {
+            width: 20vw; /* تحجيم الشعار للهواتف */
+            max-width: 80px;
+            height: auto;
+            filter: drop-shadow(0 0 5px var(--neon-color));
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 255, 0.03) 0px,
+                rgba(0, 255, 255, 0.03) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(0, 15, 15, 0.9);
+            border: 1px solid var(--neon-color);
+            border-radius: 10px;
+            padding: 1.5rem; /* تقليل المسافات لتناسب الهاتف */
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .glitch-text {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            text-shadow: 
+                2px 2px var(--error-color),
+                -2px -2px var(--neon-color);
+            animation: glitch 1s infinite;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .start-button {
+            width: 100%;
+            padding: 1rem;
+            background: transparent;
+            border: 2px solid var(--neon-color);
+            color: var(--neon-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-button:hover {
+            background: var(--neon-color);
+            color: var(--bg-color);
+            box-shadow: 0 0 20px var(--neon-color);
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 500px;
+            background: rgba(0, 20, 20, 0.95);
+            border: 1px solid var(--neon-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            z-index: 1000;
+        }
+
+        .david-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 20px auto;
+            display: block;
+            border: 2px solid var(--neon-color);
+            box-shadow: 0 0 15px var(--neon-color);
+        }
+
+        .mission-details {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            border: 1px solid var(--neon-color);
+            border-radius: 5px;
+            background: rgba(0, 255, 255, 0.1);
+        }
+
+        .popup-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .popup-buttons button {
+            padding: 0.8rem 2rem;
+            border: 1px solid var(--neon-color);
+            background: transparent;
+            color: var(--neon-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .popup-buttons button:hover {
+            background: var(--neon-color);
+            color: var(--bg-color);
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-bar {
+            width: 80%;
+            height: 4px;
+            background: rgba(0, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .loading-progress {
+            width: 0%;
+            height: 100%;
+            background: var(--neon-color);
+            animation: loading 3s infinite linear;
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes glitch {
+            0% {
+                text-shadow: 2px 2px var(--error-color),
+                            -2px -2px var(--neon-color);
+            }
+            25% {
+                text-shadow: -2px 2px var(--error-color),
+                            2px -2px var(--neon-color);
+            }
+            50% {
+                text-shadow: 2px -2px var(--error-color),
+                            -2px 2px var(--neon-color);
+            }
+            100% {
+                text-shadow: -2px -2px var(--error-color),
+                            2px 2px var(--neon-color);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .glitch-text {
+                font-size: 1.5rem;
+            }
+            .start-button {
+                font-size: 1rem;
+                padding: 0.8rem;
+            }
+            .description {
+                font-size: 1rem;
+            }
+            .popup {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+            }
+            .logo {
+                width: 25vw;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="spy.png" alt="شعار الجاسوس" class="logo">
+    </div>
+
+    <div class="container">
+        <h1 class="glitch-text">نظام الاختراق السري</h1>
+        <p class="description">مرحباً بك في نظام الاختراق المتقدم. انت الآن على وشك بدء مهمة سرية للغاية.</p>
+        <button class="start-button" onclick="openPopup()">بدء المهمة</button>
+    </div>
+
+    <div id="popup" class="popup">
+        <h2 class="glitch-text" style="font-size: 1.5rem;">تفاصيل المهمة السرية</h2>
+        <img src="raja.png" alt="ايغور" class="david-image">
+        <div class="mission-details">
+          <p>الهدف: تعطيل خطة نووية لشخص يدعى <strong>إيغور</strong></p>
+          <p>إيغور هو عميل روسي خان الرئيس بوتين ويخطط لتفجير العالم باستخدام أسلحة نووية.</p>
+          <p>المهمة: فك الألغاز والشفرات للحصول على مفتاح تعطيل القنابل النووية.</p>
+          <p>درجة الخطورة: حرجة</p>
+          <p>الوقت المتاح: 72 ساعة</p>
+        </div>
+        <div class="popup-buttons">
+            <button onclick="startMission()">تنفيذ المهمة</button>
+            <button onclick="closePopup()">إلغاء</button>
+        </div>
+    </div>
+
+    <!-- شاشة التحميل الهكرية -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+
+    <script>
+        function openPopup() {
+            document.getElementById("popup").style.display = "block";
+            playSound('popup');
+        }
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+            playSound('cancel');
+        }
+
+        function startMission() {
+            document.getElementById("loading-screen").style.display = "flex"; 
+            playSound('start');
+            setTimeout(() => {
+                window.location.href = "mission_page.html"; 
+            }, 4000); 
+        }
+
+        function playSound(type) {
+            const sounds = {
+                popup: "sound/popup.mp3",
+                cancel: "sound/cancel.mp3",
+                start: "sound/start.mp3"
+            };
+            const audio = new Audio(sounds[type]);
+            audio.play();
+        }
+    </script>
+</body>
+</html>

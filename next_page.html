@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام التحكم النووي السري</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            color: #ff3300;
+            font-family: 'Share Tech Mono', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .radiation-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at center, 
+                    rgba(255, 50, 0, 0.1) 0%,
+                    rgba(0, 0, 0, 0.9) 100%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .top-secret {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: #ff0000;
+            text-transform: uppercase;
+            animation: blink 2s infinite;
+            font-weight: bold;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        .nuclear-warning {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 36px;
+            color: #ff0000;
+            animation: pulse 1s infinite;
+        }
+
+        .hazard-symbol {
+            font-size: 60px;
+            display: block;
+            text-align: center;
+            margin: 20px 0;
+            animation: rotate 4s infinite linear;
+        }
+
+        .terminal {
+            background: rgba(10, 0, 0, 0.95);
+            border: 3px solid #ff3300;
+            padding: 20px;
+            height: 350px;
+            overflow-y: auto;
+            margin: 20px 0;
+            box-shadow: 0 0 30px rgba(255, 51, 0, 0.3);
+            position: relative;
+        }
+
+        .terminal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                transparent 1px,
+                rgba(255, 51, 0, 0.1) 2px,
+                rgba(255, 51, 0, 0.1) 3px
+            );
+            pointer-events: none;
+        }
+
+        .terminal-line {
+            color: #ff3300;
+            margin: 10px 0;
+            font-family: 'Share Tech Mono', monospace;
+            text-shadow: 0 0 5px #ff3300;
+        }
+
+        .progress-wrapper {
+            background: rgba(10, 0, 0, 0.95);
+            border: 3px solid #ff3300;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            height: 40px;
+            background: #1a0000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                #ff3300,
+                #ff5500
+            );
+            position: relative;
+            transition: width 0.5s ease;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            animation: shine 2s linear infinite;
+        }
+
+        .deactivate-btn {
+            width: 100%;
+            padding: 25px;
+            background: #ff0000;
+            border: 3px solid #ff3300;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Share Tech Mono', monospace;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .deactivate-btn::before {
+            content: '⚠️';
+            margin-right: 10px;
+        }
+
+        .deactivate-btn:hover {
+            background: #ff3300;
+            transform: scale(1.02);
+        }
+
+        .deactivate-btn:disabled {
+            background: #00ff00;
+            border-color: #00ff00;
+            cursor: not-allowed;
+        }
+
+        .warning-lights {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: #ff0000;
+            animation: warning-flash 1s infinite;
+            box-shadow: 0 0 20px #ff0000;
+        }
+
+        @keyframes warning-flash {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-200%); }
+            100% { transform: translateX(200%); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .status-indicator {
+            text-align: center;
+            font-size: 24px;
+            margin: 20px 0;
+            color: #ff3300;
+            text-shadow: 0 0 10px #ff3300;
+        }
+
+        @media (max-width: 768px) {
+            .terminal {
+                height: 300px;
+            }
+            .deactivate-btn {
+                font-size: 20px;
+                padding: 20px;
+            }
+            .nuclear-warning {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="radiation-bg"></div>
+    <div class="warning-lights"></div>
+    <div class="top-secret">TOP SECRET</div>
+    
+    <div class="container">
+        <div class="nuclear-warning">⚠️ نظام تعطيل السلاح النووي ⚠️</div>
+        <div class="hazard-symbol">☢️</div>
+        
+        <div class="terminal" id="terminal"></div>
+
+        <div class="progress-wrapper">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+        </div>
+
+        <button class="deactivate-btn" id="deactivateBtn">تعطيل النظام النووي</button>
+        
+        <div class="status-indicator" id="status">حالة النظام: تحذير! نظام نووي نشط</div>
+    </div>
+
+    <script>
+        const terminal = document.getElementById('terminal');
+        const progress = document.getElementById('progress');
+        const deactivateBtn = document.getElementById('deactivateBtn');
+        const status = document.getElementById('status');
+
+        function addLog(text, type = 'info') {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.innerHTML = `[${new Date().toLocaleTimeString()}] ${text}`;
+            terminal.appendChild(line);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function createAlarm(freq, duration) {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+            oscillator.type = 'sawtooth';
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.start();
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration/1000);
+            setTimeout(() => oscillator.stop(), duration);
+        }
+
+        deactivateBtn.addEventListener('click', async function() {
+            this.disabled = true;
+            createAlarm(440, 1000);
+
+            const hackingSteps = [
+                "🚨 بدء إجراءات تعطيل السلاح النووي...",
+                "⚡ تجاوز أنظمة الحماية الأولية...",
+                "🔓 فك تشفير البروتوكولات النووية...",
+                "⚠️ اختراق نظام التحكم المركزي...",
+                "🛡️ تعطيل الدروع الإشعاعية...",
+                "💻 تجاوز خوارزميات الأمان...",
+                "🔒 تعطيل آليات التفجير النووي...",
+                "⚛️ إيقاف التفاعل النووي المتسلسل...",
+                "🌡️ خفض درجة حرارة المفاعل...",
+                "✅ تأكيد التعطيل النهائي..."
+            ];
+
+            for(let i = 0; i < hackingSteps.length; i++) {
+                createAlarm(300 + (i * 50), 200);
+                addLog(hackingSteps[i]);
+                progress.style.width = `${(i + 1) * 10}%`;
+                await new Promise(r => setTimeout(r, 2000));
+            }
+
+            createAlarm(880, 1000);
+            addLog("🎯 تم تعطيل السلاح النووي بنجاح!", 'success');
+            status.innerHTML = "✅ حالة النظام: تم التعطيل بنجاح";
+            status.style.color = '#00ff00';
+            this.style.background = '#00ff00';
+            this.innerHTML = '✅ تم التعطيل بنجاح';
+        });
+    </script>
+</body>
+</html>

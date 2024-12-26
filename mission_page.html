@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحدي الهاكر</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+        body {
+            background-color: #000;
+            color: #0f0; 
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 15px;
+            overflow-x: hidden;
+        }
+
+        #progressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(0,255,0,0.2);
+            z-index: 9999;
+        }
+
+        #progressFill {
+            height: 100%;
+            background: #0f0;
+            width: 0%;
+            transition: width 0.3s;
+            box-shadow: 0 0 10px #0f0;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(0,20,0,0.95);
+            border: 2px solid #0f0;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0,255,0,0.3);
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #0f0;
+            text-shadow: 0 0 10px #0f0;
+        }
+
+        .image-container {
+            max-width: 300px;
+            margin: 0 auto 1.5rem;
+            padding: 10px;
+            border: 1px solid #0f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 5px;
+        }
+
+        .input-group {
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            max-width: 300px;
+            padding: 12px;
+            margin: 10px auto;
+            background: rgba(0,0,0,0.7);
+            border: 2px solid #0f0;
+            border-radius: 8px;
+            color: #0f0;
+            font-size: 16px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 15px #0f0;
+            transform: scale(1.02);
+        }
+
+        button {
+            background: #0f0;
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #000;
+            color: #0f0;
+            box-shadow: 0 0 15px #0f0;
+            transform: scale(1.05);
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            min-height: 30px;
+        }
+
+        .success-message {
+            color: #0f0;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 { 
+                font-size: 1.5rem;
+            }
+
+            input, button {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="progressBar">
+        <div id="progressFill"></div>
+    </div>
+
+    <div class="container">
+        <h1>تحدي الهاكر: حل الشفرة</h1>
+        
+        <div class="image-container">
+            <img src="123.png" alt="شفرة" onload="this.style.width='300px'; this.style.height='300px';">
+        </div>
+        
+        <div class="input-group">
+            <input type="text" id="userAnswer" placeholder="أدخل الإجابة هنا">
+            <button onclick="checkAnswer()">تحقق</button>
+        </div>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function checkAnswer() {
+            const correctAnswers = [
+                "الذيب الأحمر", "الذئب الأحمر", "الذيب الاحمر", "الذئب الاحمر",
+                "الذيب الحمر", "الذئب الحمر", "الذيب احمر", "الذئب احمر",
+                "ذيب الأحمر", "ذئب الأحمر", "ذيب الاحمر", "ذئب الاحمر"
+            ];
+            
+            const userAnswer = document.getElementById("userAnswer").value.trim();
+            const resultElement = document.getElementById("result");
+            const progressFill = document.getElementById("progressFill");
+
+            if (correctAnswers.includes(userAnswer)) {
+                resultElement.innerHTML = "🎉 إجابة صحيحة!";
+                resultElement.classList.add("success-message");
+                
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += 1;
+                    progressFill.style.width = progress + "%";
+                    
+                    if (progress >= 100) {
+                        clearInterval(progressInterval);
+                        setTimeout(() => {
+                            window.location.href = "nextpage.html";
+                        }, 500);
+                    }
+                }, 20);
+            } else {
+                resultElement.innerHTML = "❌ إجابة خاطئة! حاول مرة أخرى.";
+                resultElement.classList.remove("success-message");
+                resultElement.style.color = "#f00";
+                document.getElementById("userAnswer").value = "";
+            }
+        }
+
+        // كود لمعالجة الإدخال بالضغط على Enter
+        document.getElementById("userAnswer").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                checkAnswer();
+            }
+        });
+    </script>
+</body>
+</html>
